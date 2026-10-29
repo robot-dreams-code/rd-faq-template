@@ -1,0 +1,510 @@
+/* ==========================================================================
+   r_d FAQ — стилі за стайлгайдом robot_dreams 2023
+   Кольори: Soft White #E5E8EC, White #FFFFFF, Black #181919, Soft Black #282828
+   Шрифти: Vin Mono Pro Bold (заголовки), IBM Plex Sans Regular (текст, додаткові плашки)
+   ========================================================================== */
+
+/* Vin Mono Pro — платний шрифт. Покладіть файл ліцензії компанії в assets/fonts/.
+   Поки файлу немає, браузер використає JetBrains Mono (близький моноширинний з кирилицею). */
+@font-face {
+  font-family: "Vin Mono Pro";
+  src: url("fonts/VinMonoPro-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --soft-white: #E5E8EC;
+  --white: #FFFFFF;
+  --black: #181919;
+  --soft-black: #282828;
+
+  --accent: #4BD86A;          /* перевизначається з таблиці */
+  --accent-ink: #181919;
+
+  /* семантичні токени — світла тема */
+  --bg: var(--soft-white);
+  --card: var(--white);
+  --ink: var(--black);
+  --ink-2: #4A4E52;
+  --line: rgba(24, 25, 25, .1);
+  --hero-bg: var(--black);
+  --hero-ink: var(--soft-white);
+  --hero-ghost: var(--soft-black);
+  --pill-ink-bg: var(--black);
+  --pill-ink-fg: var(--soft-white);
+  --pill-paper-bg: var(--white);
+  --pill-paper-fg: var(--black);
+  --mark-bg: color-mix(in srgb, var(--accent) 45%, transparent);
+  --focus: var(--black);
+  --sk: rgba(24, 25, 25, .07);
+
+  --font-head: "Vin Mono Pro", "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /* сітка 1:1 — одиниця сітки = 8px, радіус основної плашки = 3 одиниці */
+  --u: 8px;
+  --r-main: 24px;
+  --r-pill: 999px;
+  --gap: 4px;                 /* зазор між суміжними плашками, як у суббрендах */
+
+  color-scheme: light;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: var(--black);
+    --card: var(--soft-black);
+    --ink: var(--soft-white);
+    --ink-2: #A7ACB2;
+    --line: rgba(229, 232, 236, .1);
+    --hero-bg: var(--soft-white);
+    --hero-ink: var(--black);
+    --hero-ghost: #D6DADF;
+    --pill-ink-bg: var(--soft-white);
+    --pill-ink-fg: var(--black);
+    --pill-paper-bg: var(--soft-black);
+    --pill-paper-fg: var(--soft-white);
+    --mark-bg: color-mix(in srgb, var(--accent) 40%, transparent);
+    --focus: var(--soft-white);
+    --sk: rgba(229, 232, 236, .07);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: var(--black);
+  --card: var(--soft-black);
+  --ink: var(--soft-white);
+  --ink-2: #A7ACB2;
+  --line: rgba(229, 232, 236, .1);
+  --hero-bg: var(--soft-white);
+  --hero-ink: var(--black);
+  --hero-ghost: #D6DADF;
+  --pill-ink-bg: var(--soft-white);
+  --pill-ink-fg: var(--black);
+  --pill-paper-bg: var(--soft-black);
+  --pill-paper-fg: var(--soft-white);
+  --mark-bg: color-mix(in srgb, var(--accent) 40%, transparent);
+  --focus: var(--soft-white);
+  --sk: rgba(229, 232, 236, .07);
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: inherit; }
+html { scroll-padding-top: calc(env(safe-area-inset-top, 0px) + 24px); -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+img, svg { max-width: 100%; }
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+
+[hidden] { display: none !important; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.skip { position: absolute; left: 16px; top: -60px; z-index: 20; padding: 8px 16px; border-radius: var(--r-pill); background: var(--pill-ink-bg); color: var(--pill-ink-fg); text-decoration: none; }
+.skip:focus { top: calc(env(safe-area-inset-top, 0px) + 12px); }
+
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+
+.wrap { width: min(1180px, 100% - 2 * clamp(16px, 4vw, 48px)); margin-inline: auto; }
+
+/* --------------------------------------------------------------------------
+   Плашка-робот (логотип і суббренд): скошений правий верхній кут + скруглення
+   -------------------------------------------------------------------------- */
+.plate {
+  --h: 44px;
+  display: inline-flex;
+  align-items: center;
+  height: var(--h);
+  padding: 0 calc(var(--h) * .42) 0 calc(var(--h) * .34);
+  border-radius: calc(var(--h) * .2);
+  clip-path: polygon(0 0, calc(100% - var(--h) * .3) 0, 100% calc(var(--h) * .3), 100% 100%, 0 100%);
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: calc(var(--h) * .52);
+  line-height: 1;
+  letter-spacing: .01em;
+  white-space: nowrap;
+}
+.plate--ink { background: var(--pill-ink-bg); color: var(--pill-ink-fg); }
+.plate--paper { background: var(--pill-paper-bg); color: var(--pill-paper-fg); }
+
+/* --------------------------------------------------------------------------
+   Додаткова плашка (pill) — максимальне скруглення, лише IBM Plex Sans
+   -------------------------------------------------------------------------- */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 6px 18px;
+  border: 0;
+  border-radius: var(--r-pill);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.2;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.pill--ink { background: var(--pill-ink-bg); color: var(--pill-ink-fg); }
+.pill--paper { background: var(--pill-paper-bg); color: var(--pill-paper-fg); }
+.pill--ghost { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1px var(--line); }
+.pill--accent { background: var(--accent); color: var(--accent-ink); }
+.pill--sm { min-height: 28px; padding: 4px 14px; font-size: 13px; }
+.pill--lg { min-height: 52px; padding: 12px 28px; font-size: 17px; }
+
+/* --------------------------------------------------------------------------
+   Шапка
+   -------------------------------------------------------------------------- */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-block: clamp(16px, 3vw, 32px) clamp(24px, 4vw, 48px);
+}
+.brand { display: inline-flex; gap: var(--gap); text-decoration: none; border-radius: 10px; }
+.brand img { display: block; height: 44px; width: auto; }
+.topbar-actions { display: flex; gap: var(--gap); }
+.theme-btn { width: 36px; padding: 0; justify-content: center; }
+
+/* --------------------------------------------------------------------------
+   Hero: комбінація плашок — додаткові зверху, основна чорна під ними
+   -------------------------------------------------------------------------- */
+.hero { margin-bottom: clamp(32px, 5vw, 56px); }
+.hero-tags { display: flex; flex-wrap: wrap; gap: var(--gap); margin-bottom: var(--gap); min-height: 0; }
+.hero-tags:empty { display: none; }
+.hero-tags .pill:nth-child(1) { background: var(--accent); color: var(--accent-ink); }
+.hero-tags .pill { cursor: default; }
+
+.hero-plate {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  padding: clamp(32px, 6vw, 72px) clamp(24px, 5vw, 64px) clamp(32px, 5vw, 56px);
+  border-radius: var(--r-main);
+  background: var(--hero-bg);
+  color: var(--hero-ink);
+  min-height: clamp(260px, 34vw, 400px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.hero-ghost {
+  position: absolute;
+  z-index: -1;
+  top: -.08em;
+  right: -.04em;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: clamp(140px, 30vw, 380px);
+  line-height: 1;
+  letter-spacing: -.02em;
+  color: var(--hero-ghost);
+  user-select: none;
+  pointer-events: none;
+}
+.hero-title {
+  margin: 0;
+  max-width: 16ch;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: clamp(36px, 6.4vw, 84px);
+  line-height: 1;                /* інтерліньяж = кеглю */
+  letter-spacing: .01em;
+  text-transform: uppercase;     /* регістр: усі великі */
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+.hero-sub {
+  margin: 20px 0 0;
+  max-width: 52ch;
+  font-size: clamp(16px, 1.6vw, 19px);
+  line-height: 1.45;
+  opacity: .8;
+}
+.hero-sub:empty { display: none; }
+
+/* --------------------------------------------------------------------------
+   Розкладка: ліва колонка (пошук + категорії) і список
+   -------------------------------------------------------------------------- */
+.layout {
+  display: grid;
+  grid-template-columns: minmax(240px, 300px) minmax(0, 1fr);
+  gap: clamp(24px, 4vw, 56px);
+  align-items: start;
+}
+.side-inner { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 24px); display: grid; gap: 16px; }
+
+.search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 52px;
+  border-radius: var(--r-pill);
+  background: var(--card);
+  box-shadow: inset 0 0 0 1px var(--line);
+  transition: box-shadow .15s;
+}
+.search:focus-within { box-shadow: inset 0 0 0 2px var(--ink); }
+.search-icon { position: absolute; left: 18px; color: var(--ink-2); pointer-events: none; }
+.search input {
+  width: 100%;
+  height: 100%;
+  padding: 0 44px 0 46px;
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 16px;
+  border-radius: inherit;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.search input::placeholder { color: var(--ink-2); }
+.search input::-webkit-search-cancel-button { display: none; }
+.search-kbd {
+  position: absolute;
+  right: 14px;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  box-shadow: inset 0 0 0 1px var(--line);
+  color: var(--ink-2);
+  font-family: var(--font-body);
+  font-size: 13px;
+}
+.search:focus-within .search-kbd, .search.has-value .search-kbd { display: none; }
+@media (hover: none) { .search-kbd { display: none; } }
+.search-clear {
+  position: absolute;
+  right: 8px;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ink-2);
+  cursor: pointer;
+}
+.search-clear:hover { color: var(--ink); background: var(--line); }
+
+.cats { display: flex; flex-direction: column; align-items: flex-start; gap: var(--gap); }
+.cat {
+  background: var(--card);
+  color: var(--ink);
+  transition: background-color .15s, color .15s;
+}
+.cat:hover { box-shadow: inset 0 0 0 1px var(--ink); }
+.cat[aria-pressed="true"] { background: var(--pill-ink-bg); color: var(--pill-ink-fg); box-shadow: none; }
+.cat:disabled { opacity: .4; cursor: default; box-shadow: none; }
+.cat-n { opacity: .55; font-variant-numeric: tabular-nums; }
+.count { margin: 4px 0 0; color: var(--ink-2); font-size: 14px; }
+
+/* --------------------------------------------------------------------------
+   Список питань
+   -------------------------------------------------------------------------- */
+.list { display: grid; gap: clamp(32px, 4vw, 48px); outline: none; min-width: 0; }
+.group { display: grid; gap: var(--gap); }
+.group-title {
+  margin: 0 0 12px;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: clamp(22px, 2.6vw, 30px);
+  line-height: 1;
+  letter-spacing: .01em;
+  text-transform: uppercase;
+}
+
+.qa {
+  border-radius: var(--r-main);
+  background: var(--card);
+  transition: box-shadow .2s;
+}
+.qa.flash { box-shadow: 0 0 0 3px var(--accent); }
+.qa-h { margin: 0; }
+.qa-q {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  width: 100%;
+  padding: 22px 22px 22px clamp(20px, 3vw, 32px);
+  border: 0;
+  border-radius: var(--r-main);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: clamp(17px, 1.7vw, 20px);
+  line-height: 1.2;
+  letter-spacing: .005em;
+}
+.qa-text { flex: 1; padding-top: 7px; text-wrap: pretty; }
+.qa-icon {
+  flex: none;
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--bg);
+  transition: background-color .2s, transform .3s cubic-bezier(.2, .7, .2, 1);
+}
+.qa-icon::before, .qa-icon::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: 14px;
+  height: 2px;
+  margin: -1px 0 0 -7px;
+  border-radius: 2px;
+  background: currentColor;
+}
+.qa-icon::after { transform: rotate(90deg); }
+.qa-q:hover .qa-icon { background: var(--line); }
+.qa.open .qa-icon { background: var(--accent); color: var(--accent-ink); transform: rotate(45deg); }
+
+.qa-a {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows .3s cubic-bezier(.2, .7, .2, 1);
+}
+.qa.open .qa-a { grid-template-rows: 1fr; }
+.qa-a-in { overflow: hidden; visibility: hidden; transition: visibility .3s; }
+.qa.open .qa-a-in { visibility: visible; }
+.qa-body {
+  padding: 0 clamp(20px, 3vw, 32px) 24px;
+  max-width: 72ch;
+  color: var(--ink);
+}
+.qa-body > :first-child { margin-top: 0; }
+.qa-body p, .qa-body ul, .qa-body ol { margin: 0 0 12px; }
+.qa-body ul, .qa-body ol { padding-left: 1.3em; }
+.qa-body li + li { margin-top: 4px; }
+.qa-body a { text-decoration-color: var(--accent); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+.qa-body a:hover { text-decoration-color: currentColor; }
+.qa-body code { padding: 1px 6px; border-radius: 6px; background: var(--bg); font-size: .92em; }
+.qa-body img { border-radius: 12px; }
+.qa-body table { border-collapse: collapse; display: block; overflow-x: auto; }
+.qa-body th, .qa-body td { padding: 6px 12px; border-bottom: 1px solid var(--line); text-align: left; }
+.qa-foot { display: flex; padding: 0 clamp(20px, 3vw, 32px) 22px; }
+.qa-copy { min-height: 32px; padding: 4px 14px; font-size: 14px; }
+.qa-copy:hover { box-shadow: inset 0 0 0 1px var(--ink); }
+
+mark { background: var(--mark-bg); color: inherit; border-radius: 3px; padding: 0 1px; }
+
+/* порожній стан і помилка */
+.empty {
+  padding: clamp(28px, 4vw, 44px);
+  border-radius: var(--r-main);
+  background: var(--card);
+}
+.empty-title {
+  margin: 0 0 8px;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: clamp(20px, 2.2vw, 26px);
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+.empty p { margin: 0 0 16px; color: var(--ink-2); max-width: 56ch; }
+
+/* --------------------------------------------------------------------------
+   Контакт
+   -------------------------------------------------------------------------- */
+.contact {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: clamp(48px, 7vw, 88px);
+  padding: clamp(28px, 4vw, 48px) clamp(24px, 5vw, 64px);
+  border-radius: var(--r-main);
+  background: var(--hero-bg);
+  color: var(--hero-ink);
+}
+.contact-title {
+  margin: 0;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: clamp(26px, 3.6vw, 44px);
+  line-height: 1;
+  text-transform: uppercase;
+}
+.contact-body { margin: 12px 0 0; max-width: 52ch; opacity: .8; }
+.contact-body:empty { display: none; }
+
+.footer { display: flex; justify-content: flex-end; padding-block: 24px 40px; min-height: 24px; }
+
+/* --------------------------------------------------------------------------
+   Тост
+   -------------------------------------------------------------------------- */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 24px);
+  z-index: 30;
+  padding: 12px 22px;
+  border-radius: var(--r-pill);
+  background: var(--pill-ink-bg);
+  color: var(--pill-ink-fg);
+  font-size: 15px;
+  opacity: 0;
+  transform: translate(-50%, 12px);
+  transition: opacity .2s, transform .2s;
+  pointer-events: none;
+}
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+/* --------------------------------------------------------------------------
+   Скелетони
+   -------------------------------------------------------------------------- */
+.sk { display: block; border-radius: var(--r-main); background: var(--sk); }
+.sk--title { width: min(520px, 80%); height: 1.6em; border-radius: 12px; background: color-mix(in srgb, var(--hero-ink) 12%, transparent); }
+.sk-list { display: grid; gap: var(--gap); }
+.sk--card { height: 84px; }
+@media (prefers-reduced-motion: no-preference) {
+  .sk { animation: pulse 1.4s ease-in-out infinite; }
+  @keyframes pulse { 50% { opacity: .45; } }
+}
+
+/* --------------------------------------------------------------------------
+   Мобільна версія
+   -------------------------------------------------------------------------- */
+@media (max-width: 880px) {
+  .layout { grid-template-columns: 1fr; }
+  .side-inner { position: static; }
+  .cats { flex-direction: row; flex-wrap: wrap; }
+}
+@media (max-width: 520px) {
+  .plate { --h: 38px; }
+  .brand img { height: 38px; }
+  #siteLink { display: none; }
+  .qa-q { gap: 14px; padding: 18px 16px 18px 20px; }
+  .qa-icon { width: 34px; height: 34px; }
+  .qa-text { padding-top: 5px; }
+  .contact { align-items: stretch; flex-direction: column; }
+  .contact .pill--lg { justify-content: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: .01ms !important; animation: none !important; }
+  html { scroll-behavior: auto; }
+}

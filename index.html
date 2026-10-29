@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Часті запитання — robot_dreams</title>
+  <meta name="description" content="Відповіді на часті запитання про навчання в robot_dreams">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M10 4h32l18 18v28a10 10 0 0 1-10 10H10A10 10 0 0 1 0 50V14A10 10 0 0 1 10 4z' fill='%23181919'/%3E%3Ctext x='29' y='43' font-family='monospace' font-weight='700' font-size='24' fill='%23E5E8EC' text-anchor='middle'%3Er_d%3C/text%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500&family=JetBrains+Mono:wght@700&display=swap">
+  <link rel="stylesheet" href="assets/style.css">
+
+  <script>
+    // Тема до першого рендеру, щоб не блимало
+    try {
+      var t = localStorage.getItem("rd-faq-theme");
+      if (t === "light" || t === "dark") document.documentElement.dataset.theme = t;
+    } catch (e) {}
+  </script>
+</head>
+<body>
+  <a class="skip" href="#list">Перейти до питань</a>
+
+  <header class="topbar wrap">
+    <a class="brand" id="brand" href="https://robotdreams.cc" aria-label="robot_dreams">
+      <span class="plate plate--ink">r_d</span><span class="plate plate--paper" id="subbrand">faq</span>
+    </a>
+    <div class="topbar-actions">
+      <a class="pill pill--ink" id="siteLink" href="https://robotdreams.cc">robotdreams.cc</a>
+      <button class="pill pill--ghost theme-btn" id="themeBtn" type="button" aria-label="Змінити тему">
+        <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><circle cx="10" cy="10" r="7.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10 2.5a7.5 7.5 0 0 1 0 15z" fill="currentColor"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero" aria-labelledby="courseTitle">
+      <div class="hero-tags" id="heroTags"></div>
+      <div class="hero-plate">
+        <span class="hero-ghost" aria-hidden="true">FAQ</span>
+        <h1 id="courseTitle" class="hero-title"><span class="sk sk--title"></span></h1>
+        <p id="courseSubtitle" class="hero-sub"></p>
+      </div>
+    </section>
+
+    <div class="layout">
+      <aside class="side" aria-label="Пошук і категорії">
+        <div class="side-inner">
+          <label class="search" for="q">
+            <span class="sr-only">Пошук по питаннях</span>
+            <svg class="search-icon" viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><circle cx="8.5" cy="8.5" r="6" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m13 13 5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            <input id="q" type="search" placeholder="Пошук по питаннях" autocomplete="off" spellcheck="false">
+            <kbd class="search-kbd" aria-hidden="true">/</kbd>
+            <button class="search-clear" id="qClear" type="button" aria-label="Очистити пошук" hidden>
+              <svg viewBox="0 0 20 20" width="14" height="14" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </button>
+          </label>
+
+          <nav class="cats" id="cats" aria-label="Категорії"></nav>
+          <p class="count" id="count" aria-live="polite"></p>
+        </div>
+      </aside>
+
+      <section class="list" id="list" aria-label="Питання та відповіді" tabindex="-1">
+        <div class="sk-list" id="skeleton" aria-hidden="true">
+          <span class="sk sk--card"></span><span class="sk sk--card"></span><span class="sk sk--card"></span><span class="sk sk--card"></span>
+        </div>
+      </section>
+    </div>
+
+    <section class="contact" id="contact" hidden aria-labelledby="contactTitle">
+      <div class="contact-text">
+        <h2 id="contactTitle" class="contact-title"></h2>
+        <p id="contactBody" class="contact-body"></p>
+      </div>
+      <a class="pill pill--accent pill--lg" id="contactBtn" href="#" target="_blank" rel="noopener"></a>
+    </section>
+  </main>
+
+  <footer class="footer wrap">
+    <span id="sourceNote" class="pill pill--ghost pill--sm" hidden>Показано збережену копію відповідей</span>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="assets/vendor/marked.min.js"></script>
+  <script src="assets/vendor/purify.min.js"></script>
+  <script src="config.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+name: Sync FAQ snapshot
+
+# Зберігає резервну копію таблиці в data/*.csv.
+# Сторінка показує її, якщо Google Sheets недоступний.
+on:
+  schedule:
+    - cron: "17 * * * *"   # щогодини
+  workflow_dispatch:        # ручний запуск: Actions → Sync FAQ snapshot → Run workflow
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-faq
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Download sheet
+        run: node scripts/sync.mjs
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add data/
+          git diff --cached --quiet || (git commit -m "chore: sync FAQ snapshot" && git push)
