@@ -6,7 +6,7 @@
 window.FAQ_CONFIG = {
   // ID таблиці з її адреси: https://docs.google.com/spreadsheets/d/<ОСЬ_ЦЕЙ_ID>/edit
   // Таблиця має бути відкрита: «Усі, хто має посилання — Читач».
-  sheetId: "https://docs.google.com/spreadsheets/d/1jGmOPqYH9et8mmKFKNQKaUkE5EYLgipnm-FMKph_8AI/edit?usp=sharing",
+  sheetId: "1jGmOPqYH9et8mmKFKNQKaUkE5EYLgipnm-FMKph_8AI",
 
   // Назви вкладок у таблиці
   faqSheet: "faq",
